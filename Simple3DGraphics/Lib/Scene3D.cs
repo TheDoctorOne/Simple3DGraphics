@@ -13,7 +13,7 @@ namespace Simple3DGraphics.Lib
         {
             Scene3D scene3D = new Scene3D();
 
-            scene3D.Shapes.Add(new Rect3D(new Vec3(0, 0, 0), new Vec3(3, 3, 3)));
+            scene3D.Shapes.Add(new Rect3D(new Vec3(0, 0, 3), new Vec3(1, 1, 1)));
 
             return scene3D;
         }

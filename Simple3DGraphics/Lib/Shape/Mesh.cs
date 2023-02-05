@@ -56,13 +56,13 @@ namespace Simple3DGraphics.Lib.Shape
             return mesh;
         }
 
-        public Mesh ProjectTo(Mat4x4 projectionMatrix, bool normalize)
+        public Mesh ProjectTo(Mat4x4 projectionMatrix)
         {
             Mesh target = new Mesh();
 
-            target.pos[0] = Math3D.MultiplyMatrixVector(normalize ? pos[0].Normalize() : pos[0], projectionMatrix);
-            target.pos[1] = Math3D.MultiplyMatrixVector(normalize ? pos[1].Normalize() : pos[1], projectionMatrix);
-            target.pos[2] = Math3D.MultiplyMatrixVector(normalize ? pos[2].Normalize() : pos[2], projectionMatrix);
+            target.pos[0] = Math3D.MultiplyMatrixVector(pos[0], projectionMatrix);
+            target.pos[1] = Math3D.MultiplyMatrixVector(pos[1], projectionMatrix);
+            target.pos[2] = Math3D.MultiplyMatrixVector(pos[2], projectionMatrix);
             target.color = color;
 
             return target;
@@ -77,7 +77,35 @@ namespace Simple3DGraphics.Lib.Shape
                 );
         }
 
-        public GraphicsPath ToXY(bool normalized)
+        public Mesh Add(Vec3 add)
+        {
+            return Subtract(add, true);
+        }
+
+        public Mesh Subtract(Vec3 sub, bool add = false)
+        {
+            Mesh mesh = new Mesh();
+
+            mesh.pos[0] = pos[0].Subtract(sub, add);
+            mesh.pos[1] = pos[1].Subtract(sub, add);
+            mesh.pos[2] = pos[2].Subtract(sub, add);
+            mesh.color = color;
+
+            return mesh;
+        }
+
+        public Mesh Subtract(Mesh sub, bool add = false)
+        {
+            Mesh mesh = new Mesh();
+
+            mesh.pos[0] = pos[0].Subtract(sub.pos[0]);
+            mesh.pos[1] = pos[1].Subtract(sub.pos[1]);
+            mesh.pos[2] = pos[2].Subtract(sub.pos[2]);
+
+            return mesh;
+        }
+
+        public GraphicsPath ToXY()
         {
             if(pos.Length == 0)
             {
@@ -86,20 +114,13 @@ namespace Simple3DGraphics.Lib.Shape
             GraphicsPath res = new GraphicsPath();
             PointF first = new PointF();
 
-            for (int i = 1; i<pos.Length; i++) 
+            for (int i = 1; i<pos.Length; i++)
             {
-                if (normalized)
-                {
-                    res.AddLine(pos[i - 1].Normalize().GetXY(), pos[i].Normalize().GetXY());
-                } 
-                else
-                {
-                    res.AddLine(pos[i - 1].GetXY(), pos[i].GetXY());
-                }
+                res.AddLine(pos[i - 1].GetXY(), pos[i].GetXY());
 
                 if(i == 1)
                 {
-                    first = normalized ? pos[i - 1].Normalize().GetXY() : pos[i - 1].GetXY();
+                    first = pos[i - 1].GetXY();
                 }
             }
 

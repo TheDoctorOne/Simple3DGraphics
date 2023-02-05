@@ -63,13 +63,23 @@ namespace Simple3DGraphics.Lib.Model
             return new PointF(X, Y);
         }
 
-        public Vec3 Subtract(Vec3 vec)
+        public Vec3 Add(Vec3 vec)
         {
+            return Subtract(vec, true);
+        }
+
+        public Vec3 Subtract(Vec3 vec, bool add = false)
+        {
+            Vec3 res = vec;
+            if (!add)
+            {
+                res = res.ScaleRaw(-1);
+            }
             return new Vec3()
             {
-                X = X - vec.X,
-                Y = Y - vec.Y,
-                Z = Z - vec.Z
+                X = X + res.X,
+                Y = Y + res.Y,
+                Z = Z + res.Z
             };
         }
     }

@@ -9,6 +9,7 @@ namespace Simple3DGraphics.Lib.Shape
 {
     public class Rect3D : BaseShape
     {
+        private Vec3 loc;
         private Mesh[] meshes;
 
         public static readonly Color[] DEFAULT_SIDE_COLORS = new Color[] { 
@@ -20,13 +21,12 @@ namespace Simple3DGraphics.Lib.Shape
             Color.Aqua,     // Bottom 
         };
 
-        public Rect3D(Vec3 pos, Vec3 size, Color[] sideColors = null)
+        private void SetMesh(Vec3 pos, Vec3 size, Color[] sideColors = null)
         {
-            if(sideColors == null)
+            if (sideColors == null)
             {
                 sideColors = DEFAULT_SIDE_COLORS;
             }
-            //Vec3 sizeNormalized = size.Normalize();
             float posXs = pos.X + size.X;
             float posYs = pos.Y + size.Y;
             float posZs = pos.Z + size.Z;
@@ -58,9 +58,20 @@ namespace Simple3DGraphics.Lib.Shape
                 };
         }
 
+        public Rect3D(Vec3 loc, Vec3 size, Color[] sideColors = null)
+        {
+            this.loc = loc;
+            SetMesh(new Vec3(), size, sideColors);
+        }
+
         public IEnumerable<Mesh> GetMeshes()
         {
             return meshes;
+        }
+
+        public Vec3 GetPosition()
+        {
+            return loc;
         }
     }
 }

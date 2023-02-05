@@ -25,14 +25,38 @@ namespace Simple3DGraphics.Lib
 
         private void FillMesh(Graphics g, Mesh mesh)
         {
-            using (Brush brush = new SolidBrush(mesh.color))
-            //using (Pen brush = new Pen(mesh.color))
+            //using (Brush brush = new SolidBrush(mesh.color))
+            using (Pen brush = new Pen(mesh.color))
             {
-                g.FillPath(brush, mesh.ToXY(false));
+                g.DrawPath(brush, mesh.ToXY());
             }
         }
 
-        public void DrawScene(Graphics g, Size screenSize)
+        float fTheta = 0;
+        Mat4x4 matRotZ = new Mat4x4(), matRotX = new Mat4x4();
+        private void UpdateRotation(float elapsedTime)
+        {
+
+            fTheta += 0.2f;
+
+            // Rotation Z
+            matRotZ.m[0][0] = (float)Math.Cos(fTheta);
+            matRotZ.m[0][1] = (float)Math.Sin(fTheta);
+            matRotZ.m[1][0] = (float)-Math.Sin(fTheta);
+            matRotZ.m[1][1] = (float)Math.Cos(fTheta);
+            matRotZ.m[2][2] = 1;
+            matRotZ.m[3][3] = 1;
+
+            // Rotation X
+            matRotX.m[0][0] = 1;
+            matRotX.m[1][1] = (float)Math.Cos(fTheta * 0.5f);
+            matRotX.m[1][2] = (float)Math.Sin(fTheta * 0.5f);
+            matRotX.m[2][1] = (float)-Math.Sin(fTheta * 0.5f);
+            matRotX.m[2][2] = (float)Math.Cos(fTheta * 0.5f);
+            matRotX.m[3][3] = 1;
+        }
+
+        public void DrawScene(Graphics g, Size screenSize, float elapsedTime)
         {
             if(screenSize.Height < 3 || screenSize.Width < 3)
             {
@@ -42,18 +66,26 @@ namespace Simple3DGraphics.Lib
             float width = screenSize.Width;
             float height = screenSize.Height;
             float aspectRatio = height / width;
-            projMat = Math3D.GetProjectionMatrix(viewDistanceNear, viewDistanceFar, fovDeg, aspectRatio);
             List<Mesh> projectedMeshes = new List<Mesh>();
+
+            projMat = Math3D.GetProjectionMatrix(viewDistanceNear, viewDistanceFar, fovDeg, aspectRatio);
+            UpdateRotation(elapsedTime);
 
             Parallel.ForEach(Scene.Shapes, (shape) =>
             {
                 foreach (Mesh mesh in shape.GetMeshes())
                 {
-                    Mesh target;
+                    // Rotate in Z-Axis
+                    Mesh target = mesh.ProjectTo(matRotZ);
 
-                    target = mesh.ProjectTo(projMat, false);
+                    // Rotate in X-Axis
+                    target = target.ProjectTo(matRotX);
+
+                    target = target.Add(shape.GetPosition());
+
+                    // 3D ---> 2D
+                    target = target.ProjectTo(projMat);
                     target = target.ScaleToScene(width * 0.5f, height * 0.5f);
-
                     lock (projectedMeshes)
                     {
                         projectedMeshes.Add(target);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Simple3DGraphics.Lib.Model;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -8,6 +9,7 @@ namespace Simple3DGraphics.Lib.Shape
 {
     public interface BaseShape
     {
+        Vec3 GetPosition();
         IEnumerable<Mesh> GetMeshes();
     }
 }
