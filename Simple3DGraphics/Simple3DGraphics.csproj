@@ -50,6 +50,7 @@
       <DependentUpon>DemoForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Demo\Program.cs" />
+    <Compile Include="Lib\Camera3D.cs" />
     <Compile Include="Lib\Mathematics\Math3D.cs" />
     <Compile Include="Lib\Model\Mat4x4.cs" />
     <Compile Include="Lib\Model\Matrix.cs" />

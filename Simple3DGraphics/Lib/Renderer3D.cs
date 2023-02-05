@@ -34,10 +34,10 @@ namespace Simple3DGraphics.Lib
 
         float fTheta = 0;
         Mat4x4 matRotZ = new Mat4x4(), matRotX = new Mat4x4();
-        private void UpdateRotation(float elapsedTime)
+        private void UpdateRotation(float deltaTimeSecs)
         {
 
-            fTheta += 0.2f;
+            fTheta += 1.0f * deltaTimeSecs;
 
             // Rotation Z
             matRotZ.m[0][0] = (float)Math.Cos(fTheta);
@@ -56,7 +56,7 @@ namespace Simple3DGraphics.Lib
             matRotX.m[3][3] = 1;
         }
 
-        public void DrawScene(Graphics g, Size screenSize, float elapsedTime)
+        public void DrawScene(Graphics g, Size screenSize, float deltaTimeSecs)
         {
             if(screenSize.Height < 3 || screenSize.Width < 3)
             {
@@ -69,7 +69,7 @@ namespace Simple3DGraphics.Lib
             List<Mesh> projectedMeshes = new List<Mesh>();
 
             projMat = Math3D.GetProjectionMatrix(viewDistanceNear, viewDistanceFar, fovDeg, aspectRatio);
-            UpdateRotation(elapsedTime);
+            UpdateRotation(deltaTimeSecs);
 
             Parallel.ForEach(Scene.Shapes, (shape) =>
             {
@@ -84,8 +84,8 @@ namespace Simple3DGraphics.Lib
                     // Translate Mesh
                     target = target.Add(shape.GetPosition());
 
-                    Vec3 normal = target.GetNormal().Normalize();
-                    if(normal.Z > 0)
+                    // Filter out unvisible sides.
+                    if(!Scene.Camera.IsVisible(target))
                     {
                         continue;
                     }

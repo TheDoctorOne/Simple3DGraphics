@@ -21,7 +21,7 @@ namespace Simple3DGraphics.Lib
         private void View3DControl_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            renderer3D.DrawScene(g, Size, (timer1.Interval * counter)/1000f);
+            renderer3D.DrawScene(g, Size, (timer1.Interval)/1000f);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
