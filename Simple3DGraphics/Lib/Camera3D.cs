@@ -12,7 +12,7 @@ namespace Simple3DGraphics.Lib
     {
         public Vec3 Position { get; set; } = new Vec3();
 
-        public bool IsVisible(Mesh target)
+        public bool IsVisible(Triangle target)
         {
             Vec3 normal = target.GetNormal().Normalize();
 

@@ -59,7 +59,7 @@
     <Compile Include="Lib\Renderer3D.cs" />
     <Compile Include="Lib\Scene3D.cs" />
     <Compile Include="Lib\Shape\BaseShape.cs" />
-    <Compile Include="Lib\Shape\Mesh.cs" />
+    <Compile Include="Lib\Shape\Triangle.cs" />
     <Compile Include="Lib\View3DControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

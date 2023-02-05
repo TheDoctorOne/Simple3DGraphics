@@ -23,12 +23,12 @@ namespace Simple3DGraphics.Lib
         {
         }
 
-        private void FillMesh(Graphics g, Mesh mesh)
+        private void FillTriangle(Graphics g, Triangle triangle)
         {
-            using (Brush brush = new SolidBrush(mesh.color))
-            //using (Pen brush = new Pen(mesh.color))
+            using (Brush brush = new SolidBrush(triangle.color))
+            //using (Pen brush = new Pen(triangle.color))
             {
-                g.FillPath(brush, mesh.ToXY());
+                g.FillPath(brush, triangle.ToXY());
             }
         }
 
@@ -66,22 +66,22 @@ namespace Simple3DGraphics.Lib
             float width = screenSize.Width;
             float height = screenSize.Height;
             float aspectRatio = height / width;
-            List<Mesh> projectedMeshes = new List<Mesh>();
+            List<Triangle> projectedTriangles = new List<Triangle>();
 
             projMat = Math3D.GetProjectionMatrix(viewDistanceNear, viewDistanceFar, fovDeg, aspectRatio);
             UpdateRotation(deltaTimeSecs);
 
             Parallel.ForEach(Scene.Shapes, (shape) =>
             {
-                foreach (Mesh mesh in shape.GetMeshes())
+                foreach (Triangle tri in shape.GetTriangles())
                 {
                     // Rotate in Z-Axis
-                    Mesh target = mesh.ProjectTo(matRotZ);
+                    Triangle target = tri.ProjectTo(matRotZ);
 
                     // Rotate in X-Axis
                     target = target.ProjectTo(matRotX);
 
-                    // Translate Mesh
+                    // Translate triangle
                     target = target.Add(shape.GetPosition());
 
                     // Filter out unvisible sides.
@@ -93,18 +93,18 @@ namespace Simple3DGraphics.Lib
                     // 3D ---> 2D
                     target = target.ProjectTo(projMat);
                     target = target.ScaleToScene(width * 0.5f, height * 0.5f);
-                    lock (projectedMeshes)
+                    lock (projectedTriangles)
                     {
-                        projectedMeshes.Add(target);
+                        projectedTriangles.Add(target);
                     }
                 }
             });
 
 
             //g.Clear(Color.White);
-            foreach (Mesh shape in projectedMeshes)
+            foreach (Triangle shape in projectedTriangles)
             {
-                FillMesh(g, shape);
+                FillTriangle(g, shape);
             }
         }
     }
