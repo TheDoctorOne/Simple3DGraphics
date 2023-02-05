@@ -90,6 +90,8 @@ namespace Simple3DGraphics.Lib
                         continue;
                     }
 
+                    float illumination = Math3D.Dot(target.GetNormal(), Scene.LightDirection.Normalize());
+                    target.color = Utils.DeriveColor(target.color, illumination < 0.1 ? 0.1f : illumination);
                     // 3D ---> 2D
                     target = target.ProjectTo(projMat);
                     target = target.ScaleToScene(width * 0.5f, height * 0.5f);

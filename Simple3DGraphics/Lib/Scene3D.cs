@@ -9,6 +9,7 @@ namespace Simple3DGraphics.Lib
     {
         public List<BaseShape> Shapes { get; } = new List<BaseShape>();
         public Camera3D Camera { get; } = new Camera3D();
+        public Vec3 LightDirection { get; } = new Vec3(0, 0, -1);
 
         public static Scene3D DefaultScene()
         {
