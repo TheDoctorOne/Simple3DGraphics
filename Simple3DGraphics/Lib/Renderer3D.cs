@@ -58,7 +58,7 @@ namespace Simple3DGraphics.Lib
 
         public void DrawScene(Graphics g, Size screenSize, float deltaTimeSecs)
         {
-            if(screenSize.Height < 3 || screenSize.Width < 3)
+            if (screenSize.Height < 3 || screenSize.Width < 3)
             {
                 return;
             }
@@ -85,7 +85,7 @@ namespace Simple3DGraphics.Lib
                     target = target.Add(shape.GetPosition());
 
                     // Filter out unvisible sides.
-                    if(!Scene.Camera.IsVisible(target))
+                    if (!Scene.Camera.IsVisible(target))
                     {
                         continue;
                     }
@@ -102,6 +102,14 @@ namespace Simple3DGraphics.Lib
                 }
             });
 
+            projectedTriangles.Sort((a, b) => 
+            {
+                if(a == null || b == null)
+                {
+                    return -1;
+                }
+                return a.AvgOfZ() > b.AvgOfZ() ? -1 : 1;
+            });
 
             //g.Clear(Color.White);
             foreach (Triangle shape in projectedTriangles)

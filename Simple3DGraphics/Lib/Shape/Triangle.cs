@@ -105,6 +105,11 @@ namespace Simple3DGraphics.Lib.Shape
             return tri;
         }
 
+        public float AvgOfZ()
+        {
+            return (pos[0].Z + pos[1].Z + pos[2].Z) / 3f; 
+        }
+
         public GraphicsPath ToXY()
         {
             if(pos.Length == 0)
