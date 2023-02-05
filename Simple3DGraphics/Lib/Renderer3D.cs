@@ -68,6 +68,8 @@ namespace Simple3DGraphics.Lib
             float aspectRatio = height / width;
             List<Triangle> projectedTriangles = new List<Triangle>();
 
+            Scene.Camera.UpdateWorldMat();
+
             projMat = Math3D.GetProjectionMatrix(viewDistanceNear, viewDistanceFar, fovDeg, aspectRatio);
             UpdateRotation(deltaTimeSecs);
 
@@ -76,7 +78,7 @@ namespace Simple3DGraphics.Lib
                 foreach (Triangle tri in shape.GetTriangles())
                 {
                     // Rotate in Z-Axis
-                    Triangle target = tri.ProjectTo(matRotZ);
+                    Triangle target = tri.ProjectTo(Scene.Camera.WorldMatrix);
 
                     // Rotate in X-Axis
                     target = target.ProjectTo(matRotX);
@@ -92,6 +94,10 @@ namespace Simple3DGraphics.Lib
 
                     float illumination = Math3D.Dot(target.GetNormal(), Scene.LightDirection.Normalize());
                     target.color = Utils.DeriveColor(target.color, illumination < 0.1 ? 0.1f : illumination);
+
+                    // World2View
+                    target = target.ProjectTo(Scene.Camera.ViewMatrix);
+
                     // 3D ---> 2D
                     target = target.ProjectTo(projMat);
                     target = target.ScaleToScene(width * 0.5f, height * 0.5f);

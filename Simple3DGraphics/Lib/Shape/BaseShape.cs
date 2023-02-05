@@ -10,6 +10,7 @@ namespace Simple3DGraphics.Lib.Shape
     public interface BaseShape
     {
         Vec3 GetPosition();
+        //Vec3 GetRotation();
         IEnumerable<Triangle> GetTriangles();
     }
 }

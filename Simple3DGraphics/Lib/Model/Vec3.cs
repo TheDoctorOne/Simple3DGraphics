@@ -6,13 +6,21 @@ using System.Text;
 
 namespace Simple3DGraphics.Lib.Model
 {
-    public struct Vec3
+    public class Vec3
     {
         public float X;
         public float Y;
         public float Z;
+        public float W = 1;
 
         public float Norm() => (float)Math.Sqrt(X * X + Y * Y + Z * Z);
+
+        public Vec3()
+        {
+            X = 0;
+            Y = 0;
+            Z = 0;
+        }
 
         public Vec3(float x, float y, float z)
         {
@@ -48,7 +56,7 @@ namespace Simple3DGraphics.Lib.Model
             };
         }
 
-        public Vec3 ScaleRaw(float scale)
+        public Vec3 Scale(float scale)
         {
             return new Vec3()
             {
@@ -73,7 +81,7 @@ namespace Simple3DGraphics.Lib.Model
             Vec3 res = vec;
             if (!add)
             {
-                res = res.ScaleRaw(-1);
+                res = res.Scale(-1);
             }
             return new Vec3()
             {
