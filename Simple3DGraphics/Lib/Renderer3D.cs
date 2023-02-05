@@ -25,10 +25,10 @@ namespace Simple3DGraphics.Lib
 
         private void FillMesh(Graphics g, Mesh mesh)
         {
-            //using (Brush brush = new SolidBrush(mesh.color))
-            using (Pen brush = new Pen(mesh.color))
+            using (Brush brush = new SolidBrush(mesh.color))
+            //using (Pen brush = new Pen(mesh.color))
             {
-                g.DrawPath(brush, mesh.ToXY());
+                g.FillPath(brush, mesh.ToXY());
             }
         }
 
@@ -81,7 +81,14 @@ namespace Simple3DGraphics.Lib
                     // Rotate in X-Axis
                     target = target.ProjectTo(matRotX);
 
+                    // Translate Mesh
                     target = target.Add(shape.GetPosition());
+
+                    Vec3 normal = target.GetNormal().Normalize();
+                    if(normal.Z > 0)
+                    {
+                        continue;
+                    }
 
                     // 3D ---> 2D
                     target = target.ProjectTo(projMat);
