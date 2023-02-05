@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D26E81CE-20DC-4599-A4D2-86BC7EB8BEC2}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Simple3DGraphics</RootNamespace>
+    <AssemblyName>Simple3DGraphics</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Demo\DemoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Demo\DemoForm.Designer.cs">
+      <DependentUpon>DemoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Demo\Program.cs" />
+    <Compile Include="Lib\Mathematics\Math3D.cs" />
+    <Compile Include="Lib\Model\Mat4x4.cs" />
+    <Compile Include="Lib\Model\Matrix.cs" />
+    <Compile Include="Lib\Shape\Rect3D.cs" />
+    <Compile Include="Lib\Model\Vec3.cs" />
+    <Compile Include="Lib\Renderer3D.cs" />
+    <Compile Include="Lib\Scene3D.cs" />
+    <Compile Include="Lib\Shape\BaseShape.cs" />
+    <Compile Include="Lib\Shape\Mesh.cs" />
+    <Compile Include="Lib\View3DControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lib\View3DControl.Designer.cs">
+      <DependentUpon>View3DControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Demo\DemoForm.resx">
+      <DependentUpon>DemoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lib\View3DControl.resx">
+      <DependentUpon>View3DControl.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
